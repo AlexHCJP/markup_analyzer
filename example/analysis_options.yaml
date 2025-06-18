@@ -31,9 +31,14 @@ analyzer:
 custom_lint:
   rules:
     - markup_analyzer:
-      simple: WARNING
-      interpolation: WARNING
-      binary: WARNING
-      adjacent: WARNING
+      simple: error
+      interpolation: warning
+      binary: warning
+      adjacent: warning
+      prefixed_identifier: none
+      method: none
+      simple_identifier: none
+      property: none
+      function: none
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

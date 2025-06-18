@@ -65,40 +65,17 @@ Example of a full configuration:
 ```yaml
 custom_lint:
   rules:
-    markup_analyzer:
-      simple: true
-      prefixed_identifier: false
-      interpolation: true
-      binary: true
-      adjacent: true
-      method: false
-      simple_identifier: false
-      property: false
-      function: false
-      severity: error  # Possible values: error, warning, info
+    - markup_analyzer:
+      simple: error
+      interpolation: warning
+      binary: warning
+      adjacent: warning
+      prefixed_identifier: none
+      method: none
+      simple_identifier: none
+      property: none
+      function: none
 ```
-
-### Configuration Parameters:
-
-- `**simple**`: Prohibits the use of simple string literals.
-
-- `**prefixed_identifier**`: Prohibits the use of prefixed identifiers (e.g., `widget.title`).
-
-- `**interpolation**`: Prohibits the use of string interpolation (e.g., `'Hello, $name'`).
-
-- `**binary**`: Prohibits the use of binary expressions with the `+` operator for string concatenation.
-
-- `**adjacent**`: Prohibits the use of adjacent string literals (e.g., `'Hello, ''world'`).
-
-- `**method**`: Prohibits method invocations that return a string (e.g., `'Hello'.toUpperCase()`).
-
-- `**simple_identifier**`: Prohibits the use of simple identifiers (e.g., variables like `title`).
-
-- `**property**`: Prohibits accessing object properties that return a string (e.g., `object.property`).
-
-- `**function**`: Prohibits function invocations that return a string (e.g., `getString()`).
-
-- `**severity**`: The severity level of the error. Possible values: `error`, `warning`, `info`.
 
 ## Usage
 

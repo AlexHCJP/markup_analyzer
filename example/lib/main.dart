@@ -37,43 +37,37 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              // 1. PrefixedIdentifier()
+              // simple_string
               'Hello, World',
             ),
             Text(
-              // 2. PrefixedIdentifier()
-              widget.title,
+              // string_interpolation
+              'count clicks: $counter',
             ),
             Text(
-              // 3. StringInterpolation()
-              'Количество кликов: $counter',
+              // binary_expression +
+              'Hello' ' World',
             ),
             Text(
-              // 4. BinaryExpression with +
-              'Hello'
-              ' World',
-            ),
-            Text(
-              // 5. AdjacentStrings
+              // adjacent_strings
               'Hello, '
               'world!',
             ),
             Text(
-              // 6. MethodInvocation()
+              // prefixed_identifier
+              widget.title,
+            ),
+            Text(
+              // method_invocation
               'Hello'.toString(),
             ),
             Text(
-              // 7. SimpleIdentifier()
+              // simple_identifier
               string,
             ),
             Text(
-              // 8. FunctionExpressionInvocation or PropertyAccess
-              Theme.of(context).textTheme.headlineMedium.toString(),
-            ),
-            Text(
-              // 9. NamedExpression()
-              'Заголовок',
-              style: Theme.of(context).textTheme.headlineMedium,
+              // function_invocation
+              (() => '')(),
             ),
           ],
         ),

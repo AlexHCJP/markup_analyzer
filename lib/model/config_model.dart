@@ -33,7 +33,6 @@ class ConfigModel {
         function: ErrorSeverityExt.fromString(map['function'] as String?),
       );
 
-
   factory ConfigModel.fromRules(Map<String, LintOptions> rules) {
     if (rules.isEmpty) return ConfigModel();
 
