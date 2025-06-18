@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -35,35 +36,42 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Hello, World'),
-
-            // 2. PrefixedIdentifier()
-            Text(widget
-                .title), // Предполагается, что widget.title определен в StatefulWidget
-
-            // 3. StringInterpolation()
-            Text('Количество кликов: $counter'),
-
-            // 4. BinaryExpression with +
-            Text('Hello' ' World'),
-
-            // 5. AdjacentStrings
             Text(
+              // 1. PrefixedIdentifier()
+              'Hello, World',
+            ),
+            Text(
+              // 2. PrefixedIdentifier()
+              widget.title,
+            ),
+            Text(
+              // 3. StringInterpolation()
+              'Количество кликов: $counter',
+            ),
+            Text(
+              // 4. BinaryExpression with +
+              'Hello'
+              ' World',
+            ),
+            Text(
+              // 5. AdjacentStrings
               'Hello, '
               'world!',
             ),
-
-            // 6. MethodInvocation()
-            Text('Hello'.toString()),
-
-            // 7. SimpleIdentifier()
-            Text(string),
-
-            // 8. FunctionExpressionInvocation or PropertyAccess
-            Text(Theme.of(context).textTheme.headlineMedium.toString()),
-
-            // 9. NamedExpression()
             Text(
+              // 6. MethodInvocation()
+              'Hello'.toString(),
+            ),
+            Text(
+              // 7. SimpleIdentifier()
+              string,
+            ),
+            Text(
+              // 8. FunctionExpressionInvocation or PropertyAccess
+              Theme.of(context).textTheme.headlineMedium.toString(),
+            ),
+            Text(
+              // 9. NamedExpression()
               'Заголовок',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
