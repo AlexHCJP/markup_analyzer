@@ -36,9 +36,9 @@ custom_lint:
       binary: warning
       adjacent: warning
       prefixed_identifier: none
-      method: none
+      method: warning
       simple_identifier: none
-      property: none
+      property: error
       function: none
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

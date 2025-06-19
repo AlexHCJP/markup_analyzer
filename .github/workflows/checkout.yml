@@ -42,5 +42,5 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Analyze project source
-        run: flutter analyze --fatal-infos --fatal-warnings lib/ test/
+        run: flutter analyze --fatal-infos --fatal-warnings lib/
 

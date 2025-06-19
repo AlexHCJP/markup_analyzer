@@ -88,11 +88,6 @@ class StringLintRule extends DartLintRule {
             problemMessage: 'Function expression invocation is not allowed.',
             errorSeverity: config.function!,
           ),
-        PropertyAccess() when config.property != null => LintCode(
-            name: 'property_access',
-            problemMessage: 'Property access is not allowed.',
-            errorSeverity: config.property!,
-          ),
         NamedExpression(:Expression expression) => _checkValue(expression),
         _ => null,
       };

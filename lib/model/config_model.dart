@@ -14,7 +14,6 @@ class ConfigModel {
     this.adjacent,
     this.method,
     this.simpleIdentifier,
-    this.property,
     this.function,
   });
 
@@ -29,7 +28,6 @@ class ConfigModel {
         method: ErrorSeverityExt.fromString(map['method'] as String?),
         simpleIdentifier:
             ErrorSeverityExt.fromString(map['simple_identifier'] as String?),
-        property: ErrorSeverityExt.fromString(map['property'] as String?),
         function: ErrorSeverityExt.fromString(map['function'] as String?),
       );
 
@@ -55,6 +53,5 @@ class ConfigModel {
   final ErrorSeverity? adjacent;
   final ErrorSeverity? method;
   final ErrorSeverity? simpleIdentifier;
-  final ErrorSeverity? property;
   final ErrorSeverity? function;
 }

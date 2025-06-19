@@ -29,6 +29,10 @@ class _MyHomePageState extends State<MyHomePage> {
   final String string = 'Hello, World';
   final int counter = 42;
 
+  String _text() {
+    return '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               // binary_expression +
-              'Hello' ' World',
+              'Hello'
+              ' World',
             ),
             Text(
               // adjacent_strings
