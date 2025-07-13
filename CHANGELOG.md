@@ -22,6 +22,6 @@
 
 - Markup Analyzer its lint
 
-## 3.0.5
+## 3.0.6
 
 - Refactoring, change version custom_lint
