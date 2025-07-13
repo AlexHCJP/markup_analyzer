@@ -281,7 +281,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "3.0.0-dev"
+    version: "3.0.2-dev"
   matcher:
     dependency: transitive
     description:

@@ -3,22 +3,26 @@ import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:markup_analyzer/model/config_model.dart';
 
+/// A custom lint rule that validates string expressions used in widget constructors
+/// based on the provided configuration.
 class StringLintRule extends DartLintRule {
+  /// Creates an instance of [StringLintRule] with the given [config].
   const StringLintRule(this.config)
       : super(
           code: const LintCode(name: '', problemMessage: ''),
         );
 
+  /// The linting configuration specifying which string expressions are allowed.
   final ConfigModel config;
 
-  static const TypeChecker _widgetChecker = TypeChecker.fromName(
-    'Widget',
-  );
+  /// Type checker for Flutter [Widget] types.
+  static const TypeChecker _widgetChecker = TypeChecker.fromName('Widget');
 
-  static const TypeChecker _stringChecker = TypeChecker.fromName(
-    'String',
-  );
+  /// Type checker for Dart [String] types.
+  static const TypeChecker _stringChecker = TypeChecker.fromName('String');
 
+  /// Registers this rule to listen to [ArgumentList] nodes and checks arguments
+  /// passed to widget constructors.
   @override
   void run(
     CustomLintResolver resolver,
@@ -38,6 +42,8 @@ class StringLintRule extends DartLintRule {
     });
   }
 
+  /// Checks all arguments in the list. If an argument is a String and violates
+  /// the configuration, it reports a lint at that node.
   void _checkParameters(ErrorReporter reporter, ArgumentList argumentList) {
     for (final arg in argumentList.arguments) {
       final argStaticType = arg.staticType;
@@ -47,6 +53,8 @@ class StringLintRule extends DartLintRule {
     }
   }
 
+  /// Determines whether a given [Expression] violates any configured string
+  /// usage rules and returns the corresponding [LintCode] if so.
   LintCode? _checkValue(Expression arg) => switch (arg) {
         SimpleStringLiteral() when config.simple != null => LintCode(
             name: 'simple_string',
