@@ -31,15 +31,14 @@ analyzer:
 custom_lint:
   rules:
     - markup_analyzer:
-      simple: true
-      interpolation: true
-      binary: true
-      adjacent: true
-      method: false
-      simple_identifier: false
-      property: false
-      function: false
-      prefixed_identifier: false
-      severity: ERROR
+      simple: error
+      interpolation: warning
+      binary: warning
+      adjacent: warning
+      prefixed_identifier: none
+      method: warning
+      simple_identifier: none
+      property: error
+      function: none
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

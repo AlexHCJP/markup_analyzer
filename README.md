@@ -1,8 +1,14 @@
 # MarkupAnalyzer Lint Rule
 
+![Pub Version](https://img.shields.io/pub/v/markup_analyzer)
+![License](https://img.shields.io/github/license/AlexHCJP/markup_analyzer)
+![Issues](https://img.shields.io/github/issues/AlexHCJP/markup_analyzer)
+[![codecov](https://codecov.io/gh/AlexHCJP/markup_analyzer/graph/badge.svg?token=UYEMR670IR)](https://codecov.io/gh/AlexHCJP/markup_analyzer)
+![Stars](https://img.shields.io/github/stars/AlexHCJP/markup_analyzer)
+
 ## Description
 
-`MarkupAnalyzer` is a customizable lint rule for the [`custom_lint`](https://pub.dev/packages/custom_lint) package in Dart/Flutter. It allows you to prohibit specific types of string expressions in the parameters of Flutter widgets.
+`Markup Analyzer` is a customizable lint rule for the [`custom_lint`](https://pub.dev/packages/custom_lint) package in Dart/Flutter. It allows you to prohibit specific types of string expressions in the parameters of Flutter widgets.
 
 This rule enables you to control the usage of string expressions such as simple string literals, interpolations, binary expressions, and others based on your configuration.
 
@@ -11,7 +17,6 @@ This rule enables you to control the usage of string expressions such as simple 
   - [Description](#description)
   - [Installation](#installation)
   - [Configuration](#configuration)
-    - [Configuration Parameters:](#configuration-parameters)
   - [Usage](#usage)
   - [Examples](#examples)
     - [1. Simple String Literals (`simple`)](#1-simple-string-literals-simple)
@@ -21,8 +26,7 @@ This rule enables you to control the usage of string expressions such as simple 
     - [5. Adjacent Strings (`adjacent`)](#5-adjacent-strings-adjacent)
     - [6. Method Invocations (`method`)](#6-method-invocations-method)
     - [7. Simple Identifiers (`simple_identifier`)](#7-simple-identifiers-simple_identifier)
-    - [8. Property Access (`property`)](#8-property-access-property)
-    - [9. Function Invocations (`function`)](#9-function-invocations-function)
+    - [8. Function Invocations (`function`)](#8-function-invocations-function)
 
 ## Installation
 
@@ -65,40 +69,16 @@ Example of a full configuration:
 ```yaml
 custom_lint:
   rules:
-    markup_analyzer:
-      simple: true
-      prefixed_identifier: false
-      interpolation: true
-      binary: true
-      adjacent: true
-      method: false
-      simple_identifier: false
-      property: false
-      function: false
-      severity: error  # Possible values: error, warning, info
+    - markup_analyzer:
+      simple: error
+      interpolation: warning
+      binary: warning
+      adjacent: warning
+      prefixed_identifier: none
+      method: none
+      simple_identifier: none
+      function: none
 ```
-
-### Configuration Parameters:
-
-- `**simple**`: Prohibits the use of simple string literals.
-
-- `**prefixed_identifier**`: Prohibits the use of prefixed identifiers (e.g., `widget.title`).
-
-- `**interpolation**`: Prohibits the use of string interpolation (e.g., `'Hello, $name'`).
-
-- `**binary**`: Prohibits the use of binary expressions with the `+` operator for string concatenation.
-
-- `**adjacent**`: Prohibits the use of adjacent string literals (e.g., `'Hello, ''world'`).
-
-- `**method**`: Prohibits method invocations that return a string (e.g., `'Hello'.toUpperCase()`).
-
-- `**simple_identifier**`: Prohibits the use of simple identifiers (e.g., variables like `title`).
-
-- `**property**`: Prohibits accessing object properties that return a string (e.g., `object.property`).
-
-- `**function**`: Prohibits function invocations that return a string (e.g., `getString()`).
-
-- `**severity**`: The severity level of the error. Possible values: `error`, `warning`, `info`.
 
 ## Usage
 
@@ -121,16 +101,15 @@ All rule violations will be displayed in the console and highlighted in your IDE
 custom_lint:
   rules:
     markup_analyzer:
-      simple: true
+      simple: error
   ```
 
   ```dart
   // BAD
   Text('Hello, world!'); // Simple string literal is prohibited.
 
-  // GOOD
-  final greeting = 'Hello, world!';
-  Text(greeting); // Using a variable instead of a literal.
+  // OR GOOD
+  Text(AppLocalizations.of(context).greeting)
   ```
 
 ### 2. Prefixed Identifiers (`prefixed_identifier`)
@@ -141,16 +120,12 @@ custom_lint:
 custom_lint:
   rules:
     markup_analyzer:
-      prefixed_identifier: true
+      prefixed_identifier: error
   ```
 
   ```dart
-  // BAD
+  // ERROR
   Text(widget.title); // Prefixed identifier is prohibited.
-
-  // GOOD
-  final title = widget.title;
-  Text(title); // Assign to a local variable first.
   ```
 
 ### 3. String Interpolation (`interpolation`)
@@ -161,7 +136,7 @@ custom_lint:
 custom_lint:
   rules:
     markup_analyzer:
-      interpolation: true
+      interpolation: error
   ```
 
   ```dart
@@ -169,7 +144,7 @@ custom_lint:
   Text('Hello, $name!'); // String interpolation is prohibited.
 
   // GOOD
-  Text('Hello, ' + name + '!'); // Use string concatenation instead.
+  Text(AppLocalizations.of(context).helloWithName(name)); // Use string concatenation instead.
   ```
 
 ### 4. Binary Expressions (`binary`)
@@ -180,16 +155,13 @@ custom_lint:
 custom_lint:
   rules:
     markup_analyzer:
-      binary: true
+      binary: error
   ```
 
 
   ```dart
-  // BAD
+  // ERROR
   Text('Hello, ' + 'world!'); // Binary expression with '+' is prohibited.
-
-  // GOOD
-  Text('Hello, world!'); // Use a single string literal.
   ```
 
 ### 5. Adjacent Strings (`adjacent`)
@@ -200,18 +172,15 @@ custom_lint:
 custom_lint:
   rules:
     markup_analyzer:
-      adjacent: true
+      adjacent: error
   ```
 
   ```dart
-  // BAD
+  // ERROR
   Text(
   'Hello, '
   'world!'
   ); // Adjacent strings are prohibited.
-
-  // GOOD
-  Text('Hello, world!'); // Combine into a single string.
   ```
 
 ### 6. Method Invocations (`method`)
@@ -222,16 +191,15 @@ custom_lint:
 custom_lint:
   rules:
     markup_analyzer:
-      method: true
+      method: error
   ```
 
   ```dart
   // BAD
-  Text('hello'.toUpperCase()); // Method invocation is prohibited.
+  Text('hello'.tr()); // Method invocation is prohibited.
 
-  // GOOD
-  final upperCaseHello = 'hello'.toUpperCase();
-  Text(upperCaseHello); // Use a variable that holds the result.
+  //GOOD
+  Text(AppLocalizations.of(context).hello)
   ```
 
 ### 7. Simple Identifiers (`simple_identifier`)
@@ -242,18 +210,15 @@ custom_lint:
 custom_lint:
   rules:
     markup_analyzer:
-      simple_identifier: true
+      simple_identifier: error
   ```
 
   ```dart
-  // BAD
+  // ERROR
   Text(title); // Simple identifier is prohibited.
-
-  // GOOD
-  Text('Static Title'); // Use a static string literal.
   ```
 
-### 8. Property Access (`property`)
+### 8. Function Invocations (`function`)
 
 **Configuration:**
 
@@ -261,36 +226,15 @@ custom_lint:
 custom_lint:
   rules:
     markup_analyzer:
-      property: true
+      function: error
   ```
 
   ```dart
-  // BAD
-  Text(user.name); // Property access is prohibited.
+  // ERROR
+  Text(() { return 'Hello' } ()); // Function invocation is prohibited.
 
-  // GOOD
-  final userName = user.name;
-  Text(userName); // Assign the property to a variable first.
   ```
 
-### 9. Function Invocations (`function`)
 
-**Configuration:**
-
-  ```yaml
-custom_lint:
-  rules:
-    markup_analyzer:
-      function: true
-  ```
-
-  ```dart
-  // BAD
-  Text(getGreeting()); // Function invocation is prohibited.
-
-  // GOOD
-  final greeting = getGreeting();
-  Text(greeting); // Use a variable containing the result.
-  ```
 
 <img align="left" src = "https://profile-counter.glitch.me/markup_analyzer/count.svg" alt ="Loading">
