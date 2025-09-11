@@ -20,10 +20,10 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  analyzer: ^7.4.5
-  analyzer_plugin: ^0.13.1
+  analyzer: ^8.0.0
+  analyzer_plugin: ^0.13.7
   collection: ^1.19.1
-  custom_lint_builder: ^0.7.5
+  custom_lint_builder: ^0.8.1
 
 dev_dependencies:
   lints: ^6.0.0

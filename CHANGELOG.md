@@ -25,3 +25,7 @@
 ## 3.0.6
 
 - Refactoring, change version custom_lint
+
+## 3.0.7
+
+- Update custom_lint 
