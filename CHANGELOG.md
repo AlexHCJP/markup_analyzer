@@ -29,3 +29,7 @@
 ## 3.0.7
 
 - Update custom_lint 
+
+## 3.0.8
+
+- resolve version packages

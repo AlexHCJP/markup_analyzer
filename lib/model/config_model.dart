@@ -21,7 +21,7 @@ class ConfigModel {
   /// Factory constructor to create a [ConfigModel] from a raw [Map].
   ///
   /// Each key in the map represents a string expression type, and the value is
-  /// a string that will be parsed into an [ErrorSeverity] using the
+  /// a string that will be parsed into an [DiagnosticSeverity] using the
   /// [ErrorSeverityExt.fromString] extension.
   factory ConfigModel.fromMap(Map<String, dynamic> map) => ConfigModel(
         simple: ErrorSeverityExt.fromString(map['simple'] as String?),
@@ -59,26 +59,26 @@ class ConfigModel {
   }
 
   /// Severity for simple string literals (e.g., `'text'`)
-  final ErrorSeverity? simple;
+  final DiagnosticSeverity? simple;
 
   /// Severity for prefixed identifiers (e.g., `ClassName.string`)
-  final ErrorSeverity? prefixedIdentifier;
+  final DiagnosticSeverity? prefixedIdentifier;
 
   /// Severity for string interpolations (e.g., `'Hello $name'`)
-  final ErrorSeverity? interpolation;
+  final DiagnosticSeverity? interpolation;
 
   /// Severity for binary expressions involving strings (e.g., `'a' + 'b'`)
-  final ErrorSeverity? binary;
+  final DiagnosticSeverity? binary;
 
   /// Severity for adjacent string literals (e.g., `'a' 'b'`)
-  final ErrorSeverity? adjacent;
+  final DiagnosticSeverity? adjacent;
 
   /// Severity for method invocations returning strings (e.g., `getText()`)
-  final ErrorSeverity? method;
+  final DiagnosticSeverity? method;
 
   /// Severity for simple identifiers referring to strings (e.g., `label`)
-  final ErrorSeverity? simpleIdentifier;
+  final DiagnosticSeverity? simpleIdentifier;
 
   /// Severity for function expression invocations returning strings (e.g., `() => 'text'`)
-  final ErrorSeverity? function;
+  final DiagnosticSeverity? function;
 }

@@ -26,7 +26,7 @@ class StringLintRule extends DartLintRule {
   @override
   void run(
     CustomLintResolver resolver,
-    ErrorReporter reporter,
+    DiagnosticReporter reporter,
     CustomLintContext context,
   ) {
     context.registry.addArgumentList((argumentList) {
@@ -44,7 +44,7 @@ class StringLintRule extends DartLintRule {
 
   /// Checks all arguments in the list. If an argument is a String and violates
   /// the configuration, it reports a lint at that node.
-  void _checkParameters(ErrorReporter reporter, ArgumentList argumentList) {
+  void _checkParameters(DiagnosticReporter reporter, ArgumentList argumentList) {
     for (final arg in argumentList.arguments) {
       final argStaticType = arg.staticType;
       if (argStaticType == null) return;

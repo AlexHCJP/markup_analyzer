@@ -74,7 +74,7 @@ clean: ## remove files created during build pipeline
 .PHONY: analyze
 analyze: get ## check source code for errors and warnings
 	$(call print-target)
-	@fvm dart format --set-exit-if-changed -l 80 -o none lib/
+	$(call format)
 	@fvm flutter analyze --fatal-infos --fatal-warnings lib/
 
 .PHONY: check
