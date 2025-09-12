@@ -4,7 +4,7 @@ PWD   := $(shell pwd)
 .DEFAULT_GOAL := all
 .PHONY: all
 all: ## build pipeline
-all: setup format analyze test dartdoc releasedryrun
+all: setup format analyze test dartdoc
 
 .PHONY: precommit
 precommit: ## validate the branch before commit
@@ -27,36 +27,74 @@ help:
 .PHONY: setup
 setup: ## setup environment
 	$(call print-target)
-	@fvm dart --disable-analytics
-	@fvm flutter config --no-analytics --enable-android --enable-web
+	@if command -v dart > /dev/null; then \
+		dart --disable-analytics; \
+	elif command -v fvm > /dev/null; then \
+		fvm dart --disable-analytics; \
+		fvm flutter config --no-analytics --enable-android --enable-web; \
+	else \
+		echo "Warning: Neither dart nor fvm found. Please install Dart SDK or Flutter."; \
+	fi
 	$(call get)
 
 .PHONY: version
-version: ## show current flutter version
+version: ## show current dart/flutter version
 	$(call print-target)
-	@fvm flutter --version
+	@if command -v dart > /dev/null; then \
+		dart --version; \
+	elif command -v fvm > /dev/null; then \
+		fvm flutter --version; \
+	else \
+		echo "Neither dart nor fvm found"; \
+	fi
 
 .PHONY: get
 get: ## get dependencies
 	$(call print-target)
-	@fvm flutter pub get
+	@if command -v dart > /dev/null; then \
+		dart pub get; \
+	elif command -v fvm > /dev/null; then \
+		fvm flutter pub get; \
+	else \
+		echo "Neither dart nor fvm found"; \
+	fi
 
 .PHONY: upgrade
 upgrade: get ## upgrade dependencies
 	$(call print-target)
-	@fvm flutter pub get
+	@if command -v dart > /dev/null; then \
+		dart pub upgrade; \
+	elif command -v fvm > /dev/null; then \
+		fvm flutter pub upgrade; \
+	else \
+		echo "Neither dart nor fvm found"; \
+	fi
 
 .PHONY: outdated
 outdated: ## check for outdated dependencies
 	$(call print-target)
-	@fvm flutter pub outdated
+	@if command -v dart > /dev/null; then \
+		dart pub outdated; \
+	elif command -v fvm > /dev/null; then \
+		fvm flutter pub outdated; \
+	else \
+		echo "Neither dart nor fvm found"; \
+	fi
 
 .PHONY: fix
 fix: get ## format and fix code
 	$(call print-target)
-	@fvm dart format .
-	@fvm dart fix --apply lib/
-	@fvm dart fix --apply
+	@if command -v dart > /dev/null; then \
+		dart format .; \
+		dart fix --apply lib/; \
+		dart fix --apply test/; \
+	elif command -v fvm > /dev/null; then \
+		fvm dart format .; \
+		fvm dart fix --apply lib/; \
+		fvm dart fix --apply test/; \
+	else \
+		echo "Neither dart nor fvm found"; \
+	fi
 
 .PHONY: format
 format: fix
@@ -67,15 +105,24 @@ fmt: fix
 .PHONY: clean
 clean: ## remove files created during build pipeline
 	$(call print-target)
-	@fvm flutter clean
+	@if command -v dart > /dev/null; then \
+		dart clean; \
+	elif command -v fvm > /dev/null; then \
+		fvm flutter clean; \
+	fi
 	@rm -rf .dart_tool build coverage .flutter-plugins .flutter-plugins-dependencies
 	$(call get)
 
 .PHONY: analyze
 analyze: get ## check source code for errors and warnings
 	$(call print-target)
-	$(call format)
-	@fvm flutter analyze --fatal-infos --fatal-warnings lib/
+	@if command -v dart > /dev/null; then \
+		dart analyze --fatal-infos --fatal-warnings lib/ test/; \
+	elif command -v fvm > /dev/null; then \
+		fvm flutter analyze --fatal-infos --fatal-warnings lib/ test/; \
+	else \
+		echo "Neither dart nor fvm found"; \
+	fi
 
 .PHONY: check
 check: analyze
@@ -86,12 +133,30 @@ lint: analyze
 .PHONY: test
 test: ## run tests
 	$(call print-target)
-	@fvm flutter test --color --coverage --concurrency=50 --platform=tester --reporter=compact --timeout=30s
+	@if command -v dart > /dev/null; then \
+		dart test --concurrency=4 --reporter=compact --timeout=30s; \
+	elif command -v fvm > /dev/null; then \
+		fvm flutter test --color --coverage --concurrency=50 --platform=tester --reporter=compact --timeout=30s; \
+	else \
+		echo "Neither dart nor fvm found"; \
+	fi
+
+.PHONY: test-coverage
+test-coverage: test ## run tests with coverage
+	$(call print-target)
+	@if command -v dart > /dev/null; then \
+		dart test --coverage=coverage; \
+		dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.dart_tool/package_config.json --report-on=lib; \
+	fi
 
 .PHONY: coverage
-coverage: test ## generate coverage report
+coverage: test-coverage ## generate coverage report
 	$(call print-target)
-	@lcov --list coverage/lcov.info
+	@if [ -f coverage/lcov.info ]; then \
+		lcov --list coverage/lcov.info; \
+	else \
+		echo "No coverage file found. Run 'make test-coverage' first."; \
+	fi
 
 .PHONY: diff
 diff: ## git diff
@@ -99,18 +164,53 @@ diff: ## git diff
 	@git diff --exit-code
 	@RES=$$(git status --porcelain) ; if [ -n "$$RES" ]; then echo $$RES && exit 1 ; fi
 
-define print-target
-    @printf "Executing target: \033[36m$@\033[0m\n"
-endef
-
-
 .PHONY: dartdoc
 dartdoc: ## generate dart documentation
 	$(call print-target)
 	@rm -rf doc
-	@fvm dart doc .
+	@if command -v dart > /dev/null; then \
+		dart doc .; \
+	elif command -v fvm > /dev/null; then \
+		fvm dart doc .; \
+	else \
+		echo "Neither dart nor fvm found"; \
+	fi
+
+.PHONY: publish-dry-run
+publish-dry-run: ## dry run package publication
+	$(call print-target)
+	@if command -v dart > /dev/null; then \
+		dart pub publish -n; \
+	elif command -v fvm > /dev/null; then \
+		fvm dart pub publish -n; \
+	else \
+		echo "Neither dart nor fvm found"; \
+	fi
 
 .PHONY: releasedryrun
-releasedryrun:
+releasedryrun: publish-dry-run
+
+.PHONY: publish
+publish: ## publish package to pub.dev
 	$(call print-target)
-	@fvm dart pub publish -n
+	@if command -v dart > /dev/null; then \
+		dart pub publish; \
+	elif command -v fvm > /dev/null; then \
+		fvm dart pub publish; \
+	else \
+		echo "Neither dart nor fvm found"; \
+	fi
+
+.PHONY: build-example
+build-example: ## build example application
+	$(call print-target)
+	@cd example && make build
+
+.PHONY: run-example
+run-example: ## run example application
+	$(call print-target)
+	@cd example && make run
+
+define print-target
+    @printf "Executing target: \033[36m$@\033[0m\n"
+endef

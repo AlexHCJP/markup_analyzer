@@ -62,9 +62,11 @@ This rule enables you to control the usage of string expressions such as simple 
 
 ## Configuration
 
-You can configure the `MarkupAnalyzer` rule via `analysis_options.yaml` by specifying which types of string expressions should be prohibited and the severity level of the error.
+You can configure the `MarkupAnalyzer` rule via `analysis_options.yaml` by specifying which types of string expressions should be prohibited, the severity level of the error, and additional options for customization.
 
-Example of a full configuration:
+### Basic Configuration
+
+Example of a basic configuration:
 
 ```yaml
 custom_lint:
@@ -79,6 +81,62 @@ custom_lint:
       simple_identifier: none
       function: none
 ```
+
+### Advanced Configuration
+
+Example of an advanced configuration with all available options:
+
+```yaml
+custom_lint:
+  rules:
+    - markup_analyzer:
+        # String expression types and their severities
+        simple: error
+        interpolation: warning
+        binary: warning
+        adjacent: warning
+        prefixed_identifier: none
+        method: none
+        simple_identifier: none
+        function: none
+        
+        # Exclude specific file patterns from analysis
+        exclude_patterns:
+          - ".*\\.generated\\.dart$"
+          - ".*\\.g\\.dart$"
+          - "test/.*\\.dart$"
+        
+        # Only analyze specific widget types (if not specified, all widgets are analyzed)
+        include_widget_types:
+          - "Text"
+          - "Button"
+          - "AppBar"
+        
+        # Exclude specific widget types from analysis
+        exclude_widget_types:
+          - "DebugWidget"
+          - "TestWidget"
+        
+        # Enable or disable helpful suggestions in error messages (default: true)
+        enable_suggestions: true
+```
+
+### Configuration Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `simple` | `error/warning/info/none` | `none` | Simple string literals (`'text'`) |
+| `interpolation` | `error/warning/info/none` | `none` | String interpolation (`'Hello $name'`) |
+| `binary` | `error/warning/info/none` | `none` | Binary expressions (`'a' + 'b'`) |
+| `adjacent` | `error/warning/info/none` | `none` | Adjacent strings (`'a' 'b'`) |
+| `prefixed_identifier` | `error/warning/info/none` | `none` | Prefixed identifiers (`widget.title`) |
+| `method` | `error/warning/info/none` | `none` | Method invocations (`getText()`) |
+| `simple_identifier` | `error/warning/info/none` | `none` | Simple identifiers (`title`) |
+| `function` | `error/warning/info/none` | `none` | Function expressions (`() => 'text'`) |
+| `exclude_patterns` | `List<String>` | `null` | Regex patterns for files to exclude |
+| `include_widget_types` | `List<String>` | `null` | Widget types to include (whitelist) |
+| `exclude_widget_types` | `List<String>` | `null` | Widget types to exclude (blacklist) |
+| `enable_suggestions` | `bool` | `true` | Include helpful suggestions in error messages |
 
 ## Usage
 
@@ -234,6 +292,89 @@ custom_lint:
   Text(() { return 'Hello' } ()); // Function invocation is prohibited.
 
   ```
+
+### 9. Advanced Configuration Examples
+
+**Exclude generated files:**
+
+```yaml
+custom_lint:
+  rules:
+    - markup_analyzer:
+        simple: error
+        exclude_patterns:
+          - ".*\\.generated\\.dart$"
+          - ".*\\.g\\.dart$"
+```
+
+**Only check specific widgets:**
+
+```yaml
+custom_lint:
+  rules:
+    - markup_analyzer:
+        simple: error
+        include_widget_types:
+          - "Text"
+          - "AppBar"
+```
+
+**Exclude debug widgets:**
+
+```yaml
+custom_lint:
+  rules:
+    - markup_analyzer:
+        simple: error
+        exclude_widget_types:
+          - "DebugWidget"
+          - "TestWidget"
+```
+
+**Disable suggestions for cleaner output:**
+
+```yaml
+custom_lint:
+  rules:
+    - markup_analyzer:
+        simple: error
+        enable_suggestions: false
+```
+
+## Development
+
+### Running Tests
+
+```bash
+# Run all tests
+make test
+
+# Run tests with coverage
+make test-coverage
+
+# View coverage report
+make coverage
+```
+
+### Code Quality
+
+```bash
+# Format code
+make format
+
+# Analyze code
+make analyze
+
+# Run all quality checks
+make precommit
+```
+
+### Building Documentation
+
+```bash
+# Generate documentation
+make dartdoc
+```
 
 
 

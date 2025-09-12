@@ -30,14 +30,35 @@ analyzer:
 custom_lint:
   rules:
     - markup_analyzer:
-      simple: error
-      interpolation: warning
-      binary: warning
-      adjacent: warning
-      prefixed_identifier: none
-      method: warning
-      simple_identifier: none
-      property: error
-      function: none
+        # Basic string expression rules
+        simple: error
+        interpolation: warning
+        binary: warning
+        adjacent: warning
+        prefixed_identifier: none
+        method: warning
+        simple_identifier: none
+        function: none
+        
+        # Advanced configuration features
+        # Exclude generated and test files
+        exclude_patterns:
+          - ".*\\.generated\\.dart$"
+          - ".*\\.g\\.dart$"
+          - "test/.*"
+        
+        # Only analyze specific widget types for demonstration
+        include_widget_types:
+          - "Text"
+          - "AppBar"
+          - "ElevatedButton"
+          - "TextButton"
+        
+        # Exclude debug widgets from analysis
+        exclude_widget_types:
+          - "DebugWidget"
+        
+        # Enable helpful suggestions (default: true)
+        enable_suggestions: true
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

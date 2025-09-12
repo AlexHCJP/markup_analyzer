@@ -16,6 +16,10 @@ class ConfigModel {
     this.method,
     this.simpleIdentifier,
     this.function,
+    this.excludePatterns,
+    this.includeWidgetTypes,
+    this.excludeWidgetTypes,
+    this.enableSuggestions = true,
   });
 
   /// Factory constructor to create a [ConfigModel] from a raw [Map].
@@ -35,6 +39,10 @@ class ConfigModel {
         simpleIdentifier:
             ErrorSeverityExt.fromString(map['simple_identifier'] as String?),
         function: ErrorSeverityExt.fromString(map['function'] as String?),
+        excludePatterns: _parseStringList(map['exclude_patterns']),
+        includeWidgetTypes: _parseStringList(map['include_widget_types']),
+        excludeWidgetTypes: _parseStringList(map['exclude_widget_types']),
+        enableSuggestions: map['enable_suggestions'] as bool? ?? true,
       );
 
   /// Factory constructor to create a [ConfigModel] from a [LintOptions] map.
@@ -56,6 +64,18 @@ class ConfigModel {
         ..write(stackTrace);
       return ConfigModel();
     }
+  }
+
+  /// Helper method to parse string lists from configuration
+  static List<String>? _parseStringList(dynamic value) {
+    if (value == null) return null;
+    if (value is List) {
+      return value.map((e) => e.toString()).toList();
+    }
+    if (value is String) {
+      return [value];
+    }
+    return null;
   }
 
   /// Severity for simple string literals (e.g., `'text'`)
@@ -81,4 +101,44 @@ class ConfigModel {
 
   /// Severity for function expression invocations returning strings (e.g., `() => 'text'`)
   final DiagnosticSeverity? function;
+
+  /// List of regex patterns to exclude from analysis (e.g., test files, generated files)
+  final List<String>? excludePatterns;
+
+  /// List of widget types to include in analysis (if specified, only these widgets will be checked)
+  final List<String>? includeWidgetTypes;
+
+  /// List of widget types to exclude from analysis
+  final List<String>? excludeWidgetTypes;
+
+  /// Whether to include helpful suggestions in error messages
+  final bool enableSuggestions;
+
+  /// Checks if a widget type should be analyzed based on include/exclude lists
+  bool shouldAnalyzeWidget(String widgetTypeName) {
+    // If exclude list is specified and widget is in it, don't analyze
+    if (excludeWidgetTypes?.contains(widgetTypeName) == true) {
+      return false;
+    }
+
+    // If include list is specified, only analyze widgets in the list
+    if (includeWidgetTypes != null) {
+      return includeWidgetTypes!.contains(widgetTypeName);
+    }
+
+    // Default: analyze all widgets not explicitly excluded
+    return true;
+  }
+
+  /// Checks if a file path should be excluded based on exclude patterns
+  bool shouldExcludeFile(String filePath) {
+    if (excludePatterns == null) return false;
+
+    for (final pattern in excludePatterns!) {
+      if (RegExp(pattern).hasMatch(filePath)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
