@@ -1,3 +1,7 @@
+## 4.0.1
+
+- Split into 8 independent lint rules — each can be enabled/disabled separately in `analysis_options.yaml`
+
 ## 4.0.0
 
 - **Breaking:** migrated from `custom_lint` to native `analysis_server_plugin` — no longer requires `custom_lint` dependency

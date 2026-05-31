@@ -31,28 +31,30 @@ plugins:
     diagnostics:
       simple_string: error
       string_interpolation: error
-      binary_expression: warning
-      adjacent_strings: warning
-      method_invocation: warning
-      simple_identifier: none
-      prefixed_identifier: none
-      function_invocation: none
+      adjacent_strings: error
+      binary_expression: error
+      prefixed_identifier: error
+      method_invocation: error
+      simple_identifier: false
+      function_invocation: false
 ```
 
 ## Configuration
 
-Each diagnostic can be set to `error`, `warning`, `info`, or `none` (disabled):
+Each rule is configured independently under `plugins: markup_analyzer: diagnostics:`.
 
-| Code | Default |
-|------|---------|
-| `simple_string` | `error` |
-| `string_interpolation` | `error` |
-| `binary_expression` | `warning` |
-| `adjacent_strings` | `warning` |
-| `method_invocation` | `warning` |
-| `simple_identifier` | `none` |
-| `prefixed_identifier` | `none` |
-| `function_invocation` | `none` |
+Set severity to `error`, `warning`, or `info` to enable. Set to `false` to disable entirely.
+
+| Code | Description | Suggested severity |
+|------|-------------|--------------------|
+| `simple_string` | Simple string literal | `error` |
+| `string_interpolation` | String interpolation | `error` |
+| `adjacent_strings` | Adjacent string literals | `error` |
+| `binary_expression` | Binary string expression | `error` |
+| `prefixed_identifier` | Prefixed `String` (e.g. `widget.title`) | `warning` |
+| `method_invocation` | `String`-returning method call | `warning` |
+| `simple_identifier` | `String` variable | `false` |
+| `function_invocation` | `String`-returning function expression | `false` |
 
 ## Diagnostics
 

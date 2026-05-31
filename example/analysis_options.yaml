@@ -29,12 +29,12 @@ plugins:
     path: ../
     diagnostics:
       simple_string: error
-      prefixed_identifier: none
+      prefixed_identifier: false
       string_interpolation: error
       binary_expression: error
       adjacent_strings: error
       method_invocation: error
-      simple_identifier: none
+      simple_identifier: false
       function_invocation: error
 
 # # Additional information about this file can be found at

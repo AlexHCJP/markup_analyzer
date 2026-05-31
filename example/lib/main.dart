@@ -1,3 +1,5 @@
+// ignore_for_file: simple_string
+
 import 'package:flutter/material.dart';
 
 void main() {
