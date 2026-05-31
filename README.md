@@ -3,238 +3,139 @@
 ![Pub Version](https://img.shields.io/pub/v/markup_analyzer)
 ![License](https://img.shields.io/github/license/AlexHCJP/markup_analyzer)
 ![Issues](https://img.shields.io/github/issues/AlexHCJP/markup_analyzer)
-[![codecov](https://codecov.io/gh/AlexHCJP/markup_analyzer/graph/badge.svg?token=UYEMR670IR)](https://codecov.io/gh/AlexHCJP/markup_analyzer)
 ![Stars](https://img.shields.io/github/stars/AlexHCJP/markup_analyzer)
+
+<p align="center">
+  <img src="pictures/contributors.png" alt="MarkupAnalyzer logo" width="200"/>
+</p>
 
 ## Description
 
-`Markup Analyzer` is a customizable lint rule for the [`custom_lint`](https://pub.dev/packages/custom_lint) package in Dart/Flutter. It allows you to prohibit specific types of string expressions in the parameters of Flutter widgets.
+`Markup Analyzer` is a native Dart analyzer plugin that enforces localization in Flutter widgets. It flags raw string expressions passed to widget constructors, encouraging the use of localized strings instead.
 
-This rule enables you to control the usage of string expressions such as simple string literals, interpolations, binary expressions, and others based on your configuration.
+The plugin uses the built-in `analysis_server_plugin` — no additional tools required.
 
 
-- [MarkupAnalyzer Lint Rule](#markupanalyzer-lint-rule)
-  - [Description](#description)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-  - [Usage](#usage)
-  - [Examples](#examples)
-    - [1. Simple String Literals (`simple`)](#1-simple-string-literals-simple)
-    - [2. Prefixed Identifiers (`prefixed_identifier`)](#2-prefixed-identifiers-prefixed_identifier)
-    - [3. String Interpolation (`interpolation`)](#3-string-interpolation-interpolation)
-    - [4. Binary Expressions (`binary`)](#4-binary-expressions-binary)
-    - [5. Adjacent Strings (`adjacent`)](#5-adjacent-strings-adjacent)
-    - [6. Method Invocations (`method`)](#6-method-invocations-method)
-    - [7. Simple Identifiers (`simple_identifier`)](#7-simple-identifiers-simple_identifier)
-    - [8. Function Invocations (`function`)](#8-function-invocations-function)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Diagnostics](#diagnostics)
+- [Examples](#examples)
 
 ## Installation
 
-1. **Add the package to your project's dependencies:**
+Add the plugin to your `analysis_options.yaml`. No changes to `pubspec.yaml` required:
 
-   Add the following to your project's `pubspec.yaml` under `dev_dependencies`:
-
-   ```yaml
-   dev_dependencies:
-     custom_lint: 
-     markup_analyzer: ^latest_version
-   ```
-
-2. **Get the dependencies:**
-
-   ```bash
-   flutter pub get
-   ```
-
-3. **Activate the plugin in `analysis_options.yaml`:**
-
-   Create or update the `analysis_options.yaml` file at the root of your project:
-
-   ```yaml
-   analyzer:
-     plugins:
-       - custom_lint
-
-   custom_lint:
-     rules:
-       - markup_analyzer
-   ```
+```yaml
+plugins:
+  markup_analyzer:
+    diagnostics:
+      simple_string: error
+      string_interpolation: error
+      binary_expression: warning
+      adjacent_strings: warning
+      method_invocation: warning
+      simple_identifier: none
+      prefixed_identifier: none
+      function_invocation: none
+```
 
 ## Configuration
 
-You can configure the `MarkupAnalyzer` rule via `analysis_options.yaml` by specifying which types of string expressions should be prohibited and the severity level of the error.
+Each diagnostic can be set to `error`, `warning`, `info`, or `none` (disabled):
 
-Example of a full configuration:
+| Code | Default |
+|------|---------|
+| `simple_string` | `error` |
+| `string_interpolation` | `error` |
+| `binary_expression` | `warning` |
+| `adjacent_strings` | `warning` |
+| `method_invocation` | `warning` |
+| `simple_identifier` | `none` |
+| `prefixed_identifier` | `none` |
+| `function_invocation` | `none` |
 
-```yaml
-custom_lint:
-  rules:
-    - markup_analyzer:
-      simple: error
-      interpolation: warning
-      binary: warning
-      adjacent: warning
-      prefixed_identifier: none
-      method: none
-      simple_identifier: none
-      function: none
-```
+## Diagnostics
 
-## Usage
+| Code | Description |
+|------|-------------|
+| `simple_string` | Simple string literal passed to a widget |
+| `string_interpolation` | String interpolation passed to a widget |
+| `adjacent_strings` | Adjacent string literals passed to a widget |
+| `binary_expression` | Binary string expression (e.g. `'a' + 'b'`) passed to a widget |
+| `prefixed_identifier` | Prefixed identifier of type `String` (e.g. `widget.title`) passed to a widget |
+| `method_invocation` | Method call returning `String` (e.g. `'x'.tr()`) passed to a widget |
+| `simple_identifier` | Variable of type `String` passed to a widget |
+| `function_invocation` | Function expression returning `String` passed to a widget |
 
-After setting up the plugin and configuring the rules, run the analyzer on your project:
-
-```bash
-dart run custom_lint
-```
-
-All rule violations will be displayed in the console and highlighted in your IDE if it supports `custom_lint`.
-
+All checks are **widget-scoped**: only constructor calls of classes that extend `Widget` are analyzed.
 
 ## Examples
 
-### 1. Simple String Literals (`simple`)
+### Simple string literal
 
-**Configuration:**
+```dart
+// BAD
+Text('Hello, world!');
 
-  ```yaml
-custom_lint:
-  rules:
-    markup_analyzer:
-      simple: error
-  ```
+// GOOD
+Text(AppLocalizations.of(context).greeting);
+```
 
-  ```dart
-  // BAD
-  Text('Hello, world!'); // Simple string literal is prohibited.
+### String interpolation
 
-  // OR GOOD
-  Text(AppLocalizations.of(context).greeting)
-  ```
+```dart
+// BAD
+Text('Hello, $name!');
 
-### 2. Prefixed Identifiers (`prefixed_identifier`)
+// GOOD
+Text(AppLocalizations.of(context).helloWithName(name));
+```
 
-**Configuration:**
+### Adjacent strings
 
-  ```yaml
-custom_lint:
-  rules:
-    markup_analyzer:
-      prefixed_identifier: error
-  ```
-
-  ```dart
-  // ERROR
-  Text(widget.title); // Prefixed identifier is prohibited.
-  ```
-
-### 3. String Interpolation (`interpolation`)
-
-**Configuration:**
-
-  ```yaml
-custom_lint:
-  rules:
-    markup_analyzer:
-      interpolation: error
-  ```
-
-  ```dart
-  // BAD
-  Text('Hello, $name!'); // String interpolation is prohibited.
-
-  // GOOD
-  Text(AppLocalizations.of(context).helloWithName(name)); // Use string concatenation instead.
-  ```
-
-### 4. Binary Expressions (`binary`)
-
-**Configuration:**
-
-  ```yaml
-custom_lint:
-  rules:
-    markup_analyzer:
-      binary: error
-  ```
-
-
-  ```dart
-  // ERROR
-  Text('Hello, ' + 'world!'); // Binary expression with '+' is prohibited.
-  ```
-
-### 5. Adjacent Strings (`adjacent`)
-
-**Configuration:**
-
-  ```yaml
-custom_lint:
-  rules:
-    markup_analyzer:
-      adjacent: error
-  ```
-
-  ```dart
-  // ERROR
-  Text(
+```dart
+// BAD
+Text(
   'Hello, '
-  'world!'
-  ); // Adjacent strings are prohibited.
-  ```
+  'world!',
+);
+```
 
-### 6. Method Invocations (`method`)
+### Binary expression
 
-**Configuration:**
+```dart
+// BAD
+Text('Hello, ' + 'world!');
+```
 
-  ```yaml
-custom_lint:
-  rules:
-    markup_analyzer:
-      method: error
-  ```
+### Prefixed identifier
 
-  ```dart
-  // BAD
-  Text('hello'.tr()); // Method invocation is prohibited.
+```dart
+// BAD
+Text(widget.title);
+```
 
-  //GOOD
-  Text(AppLocalizations.of(context).hello)
-  ```
+### Method invocation
 
-### 7. Simple Identifiers (`simple_identifier`)
+```dart
+// BAD
+Text('hello'.tr());
 
-**Configuration:**
+// GOOD
+Text(AppLocalizations.of(context).hello);
+```
 
-  ```yaml
-custom_lint:
-  rules:
-    markup_analyzer:
-      simple_identifier: error
-  ```
+### Simple identifier
 
-  ```dart
-  // ERROR
-  Text(title); // Simple identifier is prohibited.
-  ```
+```dart
+// BAD
+final String title = 'Hello';
+Text(title);
+```
 
-### 8. Function Invocations (`function`)
+### Function invocation
 
-**Configuration:**
-
-  ```yaml
-custom_lint:
-  rules:
-    markup_analyzer:
-      function: error
-  ```
-
-  ```dart
-  // ERROR
-  Text(() { return 'Hello' } ()); // Function invocation is prohibited.
-
-  ```
-
-
-
-<img align="left" src = "https://profile-counter.glitch.me/markup_analyzer/count.svg" alt ="Loading">
+```dart
+// BAD
+Text((() => 'Hello')());
+```

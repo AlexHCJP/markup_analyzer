@@ -23,21 +23,19 @@ linter:
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
 
-analyzer:
-  plugins:
-    - custom_lint
 
-custom_lint:
-  rules:
-    - markup_analyzer:
-      simple: error
-      interpolation: warning
-      binary: warning
-      adjacent: warning
+plugins:
+  markup_analyzer:
+    path: ../
+    diagnostics:
+      simple_string: error
       prefixed_identifier: none
-      method: warning
+      string_interpolation: error
+      binary_expression: error
+      adjacent_strings: error
+      method_invocation: error
       simple_identifier: none
-      property: error
-      function: none
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+      function_invocation: error
+
+# # Additional information about this file can be found at
+# # https://dart.dev/guides/language/analysis-options

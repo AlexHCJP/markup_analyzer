@@ -2,7 +2,7 @@ name: markup_analyzer
 description: This tool checks the markup of a Flutter project and generates a report.
 version: 4.0.0
 
-homepage: https://www.contributors.info/repository/markup_analyzer
+homepage: https://github.com/AlexHCJP/markup_analyzer
 repository: https://github.com/AlexHCJP/markup_analyzer
 issue_tracker: https://github.com/AlexHCJP/markup_analyzer/issues
 
@@ -14,14 +14,10 @@ topics:
   - format
 
 environment:
-  sdk: ">=3.10.0 <4.0.0"
+  sdk: ">=3.11.0 <4.0.0"
 
 dependencies:
-  analysis_server_plugin: ^0.3.0
+  analysis_server_plugin: ^0.3.15
   analyzer: ^13.0.0
   analyzer_plugin: ^0.14.9
 
-dev_dependencies:
-  analyzer_testing: ^0.2.6
-  test: ^1.25.0
-  test_reflective_loader: ^0.4.0

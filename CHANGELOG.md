@@ -1,3 +1,11 @@
+## 4.0.0
+
+- **Breaking:** migrated from `custom_lint` to native `analysis_server_plugin` — no longer requires `custom_lint` dependency
+- Checks are now scoped to Flutter widget constructors only (ignores non-widget calls)
+- Type-aware analysis: only flags expressions that actually return `String`
+- Severity and enable/disable per-diagnostic configured via `analysis_options.yaml`
+- Minimum Dart SDK bumped to `3.11.0`
+
 ## 1.0.0
 
 - Initial version.

@@ -10,9 +10,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return MaterialApp(home: const MyHomePage(title: 'Flutter Demo Home Page'));
   }
 }
 
@@ -25,13 +23,17 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+class AnotherWidgetClass {
+  final String text;
+
+  AnotherWidgetClass({required this.text});
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   final String string = 'Hello, World';
   final int counter = 42;
-
-  String _text() {
-    return '';
-  }
+  final AnotherWidgetClass anotherWidget = AnotherWidgetClass(text: 'Hello');
+  final justText = Text('Hello'); // simple_identifier
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +51,13 @@ class _MyHomePageState extends State<MyHomePage> {
               'count clicks: $counter',
             ),
             Text(
-              // binary_expression +
-              'Hello'
-              ' World',
-            ),
-            Text(
               // adjacent_strings
               'Hello, '
               'world!',
+            ),
+            Text(
+              // binary_expression
+              "1" + "2",
             ),
             Text(
               // prefixed_identifier
@@ -71,8 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
               string,
             ),
             Text(
-              // function_invocation
-              (() => '')(),
+              anotherWidget.text, // prefixed_identifier
             ),
           ],
         ),
