@@ -1,3 +1,7 @@
+## 4.0.2
+
+- Update analyzer and analysis_server_plugin
+
 ## 4.0.1
 
 - Split into 8 independent lint rules — each can be enabled/disabled separately in `analysis_options.yaml`
