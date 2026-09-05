@@ -2,6 +2,7 @@ import 'package:analysis_server_plugin/plugin.dart';
 import 'package:analysis_server_plugin/registry.dart';
 import 'package:markup_analyzer/src/rules/adjacent_strings_rule.dart';
 import 'package:markup_analyzer/src/rules/binary_expression_rule.dart';
+import 'package:markup_analyzer/src/rules/binary_string_literal_rule.dart';
 import 'package:markup_analyzer/src/rules/function_invocation_rule.dart';
 import 'package:markup_analyzer/src/rules/method_invocation_rule.dart';
 import 'package:markup_analyzer/src/rules/prefixed_identifier_rule.dart';
@@ -24,6 +25,7 @@ class MarkupAnalyzerPlugin extends Plugin {
       ..registerWarningRule(StringInterpolationRule())
       ..registerWarningRule(AdjacentStringsRule())
       ..registerWarningRule(BinaryExpressionRule())
+      ..registerWarningRule(BinaryStringLiteralRule())
       ..registerWarningRule(PrefixedIdentifierRule())
       ..registerWarningRule(MethodInvocationRule())
       ..registerWarningRule(SimpleIdentifierRule())

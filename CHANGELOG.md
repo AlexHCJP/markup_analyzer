@@ -1,3 +1,8 @@
+## 4.1.0
+
+- New rule `binary_string_literal`: reports the raw literals **inside** a binary expression rather than the expression itself. `'Hello, ' + name` and `title ?? 'Untitled'` report at the literal; `label ?? l10n.fallback` and `name ?? ''` report nothing. `binary_expression` is unchanged — enable one, the other, or both
+- Installation docs: the `plugins:` entry needs a source (`version:`, `path:`, `git:`) — without one the analyzer loads no plugin and reports nothing
+
 ## 4.0.3
 
 - Readme

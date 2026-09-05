@@ -31,7 +31,8 @@ plugins:
       simple_string: error
       prefixed_identifier: false
       string_interpolation: error
-      binary_expression: error
+      binary_expression: warnings
+      binary_string_literal: error
       adjacent_strings: error
       method_invocation: error
       simple_identifier: false

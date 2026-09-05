@@ -17,9 +17,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title, this.subtitle});
 
   final String title;
+  final String? subtitle;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -34,6 +35,11 @@ class AnotherWidgetClass {
 class _MyHomePageState extends State<MyHomePage> {
   final String string = 'Hello, World';
   final int counter = 42;
+
+  /// Null here, so every `??` below falls through to its right-hand side —
+  /// which is the shape `binary_expression` and `binary_string_literal`
+  /// disagree about.
+  String? get maybeString => null;
   final AnotherWidgetClass anotherWidget = AnotherWidgetClass(text: 'Hello');
   final justText = Text('Hello'); // simple_identifier
 
@@ -58,8 +64,29 @@ class _MyHomePageState extends State<MyHomePage> {
               'world!',
             ),
             Text(
-              // binary_expression
+              // binary_expression, binary_string_literal ×2 — one per literal
               "1" + "2",
+            ),
+            Text(
+              // binary_expression, binary_string_literal — the literal only:
+              // `maybeString` is somebody else's rule.
+              maybeString ?? 'Untitled',
+            ),
+            Text(
+              // binary_expression, binary_string_literal — the walk recurses
+              // through chained operators to reach it.
+              maybeString ?? widget.subtitle ?? 'Untitled',
+            ),
+            Text(
+              // binary_expression only. Nothing raw is in here: both operands
+              // carry text from somewhere else, which is the case
+              // `binary_string_literal` exists to let through.
+              maybeString ?? string,
+            ),
+            Text(
+              // binary_expression only. `?? ''` means "nothing yet", and an
+              // empty literal has no text in it to translate.
+              maybeString ?? '',
             ),
             Text(
               // prefixed_identifier
