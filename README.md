@@ -23,11 +23,14 @@ The plugin uses the built-in `analysis_server_plugin` — no additional tools re
 
 ## Installation
 
-Add the plugin to your `analysis_options.yaml`. No changes to `pubspec.yaml` required:
+Add the plugin to your `analysis_options.yaml`. No changes to `pubspec.yaml` required —
+but the entry **must** carry a source, otherwise the analyzer parses the block, finds
+nothing to resolve, and silently loads no plugin at all (no error, just zero diagnostics):
 
 ```yaml
 plugins:
   markup_analyzer:
+    version: ^version
     diagnostics:
       simple_string: error
       string_interpolation: error
@@ -38,6 +41,37 @@ plugins:
       simple_identifier: false
       function_invocation: false
 ```
+
+Any of pub's source formats works in place of `version`:
+
+```yaml
+plugins:
+  # From pub.dev.
+  markup_analyzer: ^4.0.2
+
+  # From another host.
+  markup_analyzer:
+    version: ^4.0.2
+    hosted: https://my-pub-host.dev
+
+  # From git.
+  markup_analyzer:
+    git:
+      url: https://github.com/AlexHCJP/markup_analyzer.git
+      ref: main
+
+  # From a local checkout.
+  markup_analyzer:
+    path: ../markup_analyzer
+```
+
+The short `markup_analyzer: ^4.0.2` form takes no `diagnostics:` block — use the nested
+form whenever you want to configure severities.
+
+Verify the plugin is live by running `dart analyze` **from the package root**, with no
+target. Passing a subdirectory (`dart analyze lib`) makes that directory the analysis
+context root; with no `pubspec.yaml` there the plugin cannot be resolved, and the run
+reports "No issues found" even where the plugin would fire.
 
 ## Configuration
 
