@@ -1,9 +1,43 @@
 # MarkupAnalyzer Lint Rule
 
-![Pub Version](https://img.shields.io/pub/v/markup_analyzer)
-![License](https://img.shields.io/github/license/AlexHCJP/markup_analyzer)
-![Issues](https://img.shields.io/github/issues/AlexHCJP/markup_analyzer)
-![Stars](https://img.shields.io/github/stars/AlexHCJP/markup_analyzer)
+<div align="center">
+  <a href="https://pub.dev/packages/markup_analyzer">
+    <img src="https://img.shields.io/pub/v/markup_analyzer?label=Pub&logo=dart" alt="Pub Package" />
+  </a>
+  <a href="https://pub.dev/packages/markup_analyzer">
+    <img src="https://img.shields.io/pub/likes/markup_analyzer?style=flat&logo=dart&label=Likes" alt="Pub Likes" />
+  </a>
+  <a href="https://pub.dev/packages/markup_analyzer/score">
+    <img src="https://img.shields.io/pub/points/markup_analyzer?label=Score&logo=dart" alt="Pub Score" />
+  </a>
+  <a href="https://pub.dev/packages/markup_analyzer">
+    <img src="https://img.shields.io/pub/dm/markup_analyzer?style=flat&color=blue&logo=dart&label=Downloads" alt="Pub Monthly Downloads" />
+  </a>
+  <a href="https://github.com/AlexHCJP/markup_analyzer">
+    <img src="https://img.shields.io/github/stars/AlexHCJP/markup_analyzer?style=flat&logo=github&colorB=deeppink&label=Stars" alt="Star on Github" />
+  </a>
+  <a href="https://github.com/AlexHCJP/markup_analyzer">
+    <img src="https://img.shields.io/github/forks/AlexHCJP/markup_analyzer?color=orange&label=Forks&logo=github" alt="Forks on Github" />
+  </a>
+  <a href="https://github.com/AlexHCJP/markup_analyzer/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/AlexHCJP/markup_analyzer?style=flat&logo=github&colorB=yellow&label=Contributors" alt="Contributors" />
+  </a>
+  <a href="https://github.com/AlexHCJP/markup_analyzer/issues">
+    <img src="https://img.shields.io/github/issues/AlexHCJP/markup_analyzer?label=Issues&logo=github&color=purple" alt="Issues" />
+  </a>
+  <a href="https://github.com/AlexHCJP/markup_analyzer/actions/workflows/checkout.yml">
+    <img src="https://github.com/AlexHCJP/markup_analyzer/actions/workflows/checkout.yml/badge.svg" alt="Build Status" />
+  </a>
+  <a href="https://github.com/AlexHCJP/markup_analyzer">
+    <img src="https://img.shields.io/github/languages/code-size/AlexHCJP/markup_analyzer?logo=github&color=blue&label=Size" alt="Code size" />
+  </a>
+  <a href="https://github.com/AlexHCJP/markup_analyzer/blob/HEAD/LICENSE">
+    <img src="https://img.shields.io/github/license/AlexHCJP/markup_analyzer?label=License&color=red&logo=Leanpub" alt="License" />
+  </a>
+  <a href="https://pub.dev/packages/markup_analyzer">
+    <img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20macOS%20%7C%20Windows%20%7C%20Linux-blue.svg?logo=flutter" alt="Platform" />
+  </a>
+</div>
 
 <p align="center">
   <img src="pictures/contributors.png" alt="MarkupAnalyzer logo" width="200"/>
